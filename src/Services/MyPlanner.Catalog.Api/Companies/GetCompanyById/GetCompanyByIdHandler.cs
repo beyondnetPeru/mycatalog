@@ -1,11 +1,11 @@
-﻿using BeyondNet.Cqrs.Impl;
-using BeyondNet.Cqrs.Interfaces;
-using MyPlanner.Catalog.Api.Models;
+﻿using MyPlanner.Catalog.Api.Models;
 
 namespace MyPlanner.Catalog.Api.Companies.GetCompanyById
 {
-    public record GetCompanyByIdQuery(string Id) : IQuery<ResultSet>;
-
+    public class GetCompanyByIdQuery(string companyId) : AbstractQuery
+    {
+        public string CompanyId { get; } = companyId;
+    }
 
     public class GetCompanyByIdQueryHandler : AbstractQueryHandler<GetCompanyByIdQuery, ResultSet>
     {
@@ -20,10 +20,12 @@ namespace MyPlanner.Catalog.Api.Companies.GetCompanyById
 
         public override async Task<ResultSet> HandleQuery(GetCompanyByIdQuery request, CancellationToken cancellationToken)
         {
-            var company = await _documentSession.Query<Company>().FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+            var company = await _documentSession.Query<Company>().FirstOrDefaultAsync(x => x.Id == request.CompanyId, cancellationToken);
             
             if (company == null) {
-                return ResultSet.Error($"Company with id {request.Id} not found");
+                string message = $"Company with id {request.Id} not found";
+                logger.LogError(message);
+                return ResultSet.Error(message);                
             }
 
             return ResultSet.Success(company);

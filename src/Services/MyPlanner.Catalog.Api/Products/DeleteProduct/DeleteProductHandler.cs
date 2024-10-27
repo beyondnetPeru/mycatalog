@@ -1,10 +1,12 @@
-﻿using BeyondNet.Cqrs.Impl;
-using BeyondNet.Cqrs.Interfaces;
-using MyPlanner.Catalog.Api.Models;
+﻿using MyPlanner.Catalog.Api.Models;
 
 namespace MyPlanner.Catalog.Api.Products.DeleteProduct
 {
-    public record DeleteProductCommand(string companyId, string Id) : ICommand<ResultSet>;
+    public class DeleteProductCommand(string companyId, string productId) : AbstractCommand
+    {
+        public string CompanyId { get; } = companyId;
+        public string ProductId { get; } = productId;
+    }
 
     public class DeleteProductCommandHandler : AbstractCommandHandler<DeleteProductCommand, ResultSet>
     {
@@ -17,7 +19,7 @@ namespace MyPlanner.Catalog.Api.Products.DeleteProduct
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public override async Task<ResultSet> HandleCommand(DeleteProductCommand request, CancellationToken cancellationToken)
+        public override async Task<ResultSet> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
         {
             var product = await documentSession.LoadAsync<Product>(request.Id, cancellationToken);
 

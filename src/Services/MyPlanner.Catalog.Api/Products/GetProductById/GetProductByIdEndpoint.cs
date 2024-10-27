@@ -3,7 +3,6 @@ using MyPlanner.Catalog.Api.UseCases;
 
 namespace MyPlanner.Catalog.Api.Products.GetProductById
 {
-    
     public record GetProductByIdResponse(Product product);
 
     public class GetProductIdByQueryEndpoint : ICarterModule

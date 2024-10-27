@@ -13,12 +13,11 @@
 
                 return Results.Ok(response);
 
-            })
-                .WithTags(ENDPOINT.Tag)
-                .WithName(ENDPOINT.CREATE.Name)
-                .ProducesProblem(StatusCodes.Status400BadRequest)
-                .WithSummary(ENDPOINT.CREATE.Summary)
-                .WithDescription(ENDPOINT.CREATE.Description);
+            }).WithTags(ENDPOINT.Tag)
+            .WithName(ENDPOINT.CREATE.Name)
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .WithSummary(ENDPOINT.CREATE.Summary)
+            .WithDescription(ENDPOINT.CREATE.Description);
         }
     }
 }

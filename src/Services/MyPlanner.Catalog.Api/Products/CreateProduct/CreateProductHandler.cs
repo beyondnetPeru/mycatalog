@@ -1,10 +1,8 @@
 ﻿using MyPlanner.Catalog.Api.Models;
 
-
-
 namespace MyPlanner.Catalog.Api.Products
 {
-    public record CreateProductCommand : ICommand<ResultSet>
+    public class CreateProductCommand : AbstractCommand
     {
         public string CompanyId { get; set; } = default!;
         public string Name { get; set; } = default!;
@@ -40,7 +38,7 @@ namespace MyPlanner.Catalog.Api.Products
             _validator = validator;
         }
 
-        public override async Task<ResultSet> HandleCommand(CreateProductCommand command, CancellationToken cancellationToken)
+        public override async Task<ResultSet> Handle(CreateProductCommand command, CancellationToken cancellationToken)
         {
 
             var validationErrors = _validator.Validate(command);

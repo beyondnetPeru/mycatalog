@@ -1,10 +1,13 @@
-﻿using BeyondNet.Cqrs.Impl;
-using BeyondNet.Cqrs.Interfaces;
+﻿
 using MyPlanner.Catalog.Api.Models;
 
 namespace MyPlanner.Catalog.Api.Companies.GetCompanies
 {
-    public record GetCompaniesQuery(int? PageNumber, int? PageSize) : IQuery<ResultSet>;
+    public class GetCompaniesQuery(int? PageNumber, int? PageSize) : AbstractQuery
+    {
+        public int? PageNumber { get; } = PageNumber;
+        public int? PageSize { get; } = PageSize;
+    }
 
     public class GetCompaniesQueryHandler : AbstractQueryHandler<GetCompaniesQuery, ResultSet>
     {

@@ -1,29 +1,30 @@
-﻿using BeyondNet.Cqrs.Impl;
-using BeyondNet.Cqrs.Interfaces;
-using MyPlanner.Catalog.Api.Models;
+﻿using MyPlanner.Catalog.Api.Models;
 
 namespace MyPlanner.Catalog.Api.Companies.DeleteCompany
 {
-    public record DeleteCompanyCommand(string Id) : ICommand<ResultSet>;
+    public class DeleteCompanyCommand(string companyId) : AbstractCommand
+    {
+        public string CompanyId { get; } = companyId;
+    }
 
     public class DeleteCompanyCommandHandler : AbstractCommandHandler<DeleteCompanyCommand, ResultSet>
     {
         private readonly IDocumentSession documentSession;
-        private readonly ILogger<DeleteCompanyCommandHandler> logger;
 
         public DeleteCompanyCommandHandler(IDocumentSession documentSession, ILogger<DeleteCompanyCommandHandler> logger) : base(logger)
         {
             this.documentSession = documentSession ?? throw new ArgumentNullException(nameof(documentSession));
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public override async Task<ResultSet> HandleCommand(DeleteCompanyCommand request, CancellationToken cancellationToken)
+        public override async Task<ResultSet> Handle(DeleteCompanyCommand request, CancellationToken cancellationToken)
         {
-            var company = await documentSession.LoadAsync<Company>(request.Id, cancellationToken);
+            var company = await documentSession.LoadAsync<Company>(request.CompanyId, cancellationToken);
             
             if (company == null)
             {
-                return ResultSet.Error("Company with id {id} not found.", request.Id);
+                string message = $"Company with id {request.CompanyId} not found.";
+                logger.LogError(message);
+                return ResultSet.Error(message);
             }
 
             documentSession.Delete(company);

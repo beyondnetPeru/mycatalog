@@ -3,7 +3,11 @@
 
 namespace MyPlanner.Catalog.Api.Products.GetProductById
 {
-    public record GetProductByIdQuery(string companyId, string Id) : IQuery<ResultSet>;
+    public class GetProductByIdQuery(string companyId, string productId) : AbstractQuery
+    {
+        public string CompanyId { get; } = companyId;
+        public string ProductId { get; } = productId;
+    }
 
     public class GetProductByIdQueryHandler : AbstractQueryHandler<GetProductByIdQuery, ResultSet>
     {
@@ -18,7 +22,7 @@ namespace MyPlanner.Catalog.Api.Products.GetProductById
 
         public async override Task<ResultSet> HandleQuery(GetProductByIdQuery request, CancellationToken cancellationToken)
         {
-            var response = await _documentSession.Query<Product>().FirstOrDefaultAsync(x => x.CompanyId == request.companyId && x.Id == request.Id, cancellationToken);
+            var response = await _documentSession.Query<Product>().FirstOrDefaultAsync(x => x.CompanyId == request.CompanyId && x.Id == request.ProductId, cancellationToken);
 
             if (response == null)
             {

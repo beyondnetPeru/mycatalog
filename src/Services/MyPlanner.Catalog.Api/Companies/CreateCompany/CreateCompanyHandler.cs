@@ -1,10 +1,15 @@
-﻿using BeyondNet.Cqrs.Impl;
-using BeyondNet.Cqrs.Interfaces;
-using MyPlanner.Catalog.Api.Models;
+﻿using MyPlanner.Catalog.Api.Models;
 
 namespace MyPlanner.Catalog.Api.Companies.CreateCompany
 {
-    public record CreateCompanyCommad(string Name): ICommand<ResultSet>;
+    public class CreateCompanyCommad : AbstractCommand
+    {
+        public string Name { get; set; }
+        public CreateCompanyCommad(string name)
+        {
+            Name = name;
+        }
+    }
 
     public class CreateCompanyCommandValidator: AbstractValidator<CreateCompanyCommad>
     {
@@ -17,7 +22,6 @@ namespace MyPlanner.Catalog.Api.Companies.CreateCompany
     public class CreateCompanyCommandHandler : AbstractCommandHandler<CreateCompanyCommad, ResultSet>
     {
         private readonly IDocumentSession documentSession;
-        private readonly ILogger<CreateCompanyCommandHandler> logger;
         private readonly IValidator<CreateCompanyCommad> validator;
 
         public CreateCompanyCommandHandler(IDocumentSession documentSession,
@@ -25,17 +29,19 @@ namespace MyPlanner.Catalog.Api.Companies.CreateCompany
                                                IValidator<CreateCompanyCommad> validator) : base(logger)
         {
             this.documentSession = documentSession ?? throw new ArgumentNullException(nameof(documentSession));
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.validator = validator ?? throw new ArgumentNullException(nameof(validator));
         }
 
-        public override async Task<ResultSet> HandleCommand(CreateCompanyCommad command, CancellationToken cancellationToken)
+
+        public override async Task<ResultSet> Handle(CreateCompanyCommad command, CancellationToken cancellationToken)
         {
             var validationErrors = validator.Validate(command);
 
             if (validationErrors.Errors.Any())
             {
-                return ResultSet.Error($"Error trying create a company. Errors:{validationErrors.Errors.ToString()}");
+                string message = $"Error trying create a company. Errors:{validationErrors.Errors.ToString()}";
+                logger.LogError(message);
+                return ResultSet.Error(message);
             }
 
             var company = new Company

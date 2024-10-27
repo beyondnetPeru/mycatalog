@@ -3,7 +3,12 @@
 
 namespace MyPlanner.Catalog.Api.Products.GetProducts;
 
-public record GetProductsQuery(int? PageNumber, int? PageSize, string CompanyId): IQuery<ResultSet>;
+public class GetProductsQuery(int? PageNumber, int? PageSize, string CompanyId) : AbstractQuery
+{
+    public int? PageNumber { get; } = PageNumber;
+    public int? PageSize { get; } = PageSize;
+    public string CompanyId { get; } = CompanyId;
+}
 
 public class GetProductsQueryHandler : AbstractQueryHandler<GetProductsQuery, ResultSet>
 {

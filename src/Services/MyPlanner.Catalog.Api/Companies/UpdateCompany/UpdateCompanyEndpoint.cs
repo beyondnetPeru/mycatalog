@@ -1,7 +1,10 @@
 ﻿namespace MyPlanner.Catalog.Api.Companies.UpdateCompany
 {
-    public record UpdateCompanyRequest(string Name);
-    public record UpdateCompanyResponse(bool IsSuccess);
+    public class UpdateCompanyRequest(string Name) : AbstractCommand
+    {
+        public string Name { get; } = Name;
+    }
+
 
     public class UpdateCompanyEndpoint : ICarterModule
     {
@@ -11,14 +14,14 @@
             {
                 var command = new UpdateCompanyCommand(id, request.Name);
 
-                var response = await services.Mediator.Send(command);
+                var result = await services.Mediator.Send(command);
 
-                return response.IsSuccess ? Results.Ok(response) : Results.NotFound(response);
+                return result.IsSuccess ? Results.Ok() : Results.NotFound();
             })
                 .WithTags(ENDPOINT.Tag)
                 .WithName(ENDPOINT.UPDATE.Name)
-                .Produces<UpdateCompanyResponse>(StatusCodes.Status200OK)
-                .Produces<UpdateCompanyResponse>(StatusCodes.Status404NotFound)
+                .Produces<ResultSet>(StatusCodes.Status200OK)
+                .Produces<ResultSet>(StatusCodes.Status404NotFound)
                 .ProducesValidationProblem()
                 .WithSummary(ENDPOINT.UPDATE.Summary)
                 .WithDescription(ENDPOINT.UPDATE.Description);
