@@ -1,9 +1,6 @@
-﻿using MyPlanner.Catalog.Api.Products.UpdateProduct;
-using MyPlanner.Catalog.Api.UseCases.Products;
-
-namespace MyPlanner.Catalog.Api.UseCases.Products.UpdateProduct
+﻿namespace MyPlanner.Catalog.Api.UseCases.Products.UpdateProduct
 {
-    public record UpdateProductRequest(string Name, List<string> Category, string Description, string ImageFile, decimal Price);
+    public record UpdateProductRequest(string Name, List<string> Category, string Description, string ImageFile, int currencyValue, double commertialValue);
 
     public record UpdateProductResponse(bool IsSuccess);
 
@@ -11,9 +8,9 @@ namespace MyPlanner.Catalog.Api.UseCases.Products.UpdateProduct
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapPut("/companies/{companyId}/products/{id}", async (string companyId, string id, [AsParameters] ProductServices services, [FromBody] UpdateProductRequest request) =>
+            app.MapPut("/products/{tenantid}/products/{id}", async (string tenantId, string id, [AsParameters] ProductServices services, [FromBody] UpdateProductRequest request) =>
             {
-                var command = new UpdateProductCommand(companyId, id, request.Name, request.Category, request.Description, request.ImageFile, request.Price);
+                var command = new UpdateProductCommand(tenantId, id, request.Name, request.Category, request.Description, request.ImageFile, request.currencyValue, request.commertialValue);
 
                 var response = await services.Mediator.Send(command);
 

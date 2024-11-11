@@ -2,15 +2,16 @@
 
 namespace MyPlanner.Catalog.Api.UseCases.Products.UpdateProduct
 {
-    public class UpdateProductCommand(string companyId, string producId, string Name, List<string> Category, string Description, string ImageFile, decimal Price) : AbstractCommand
+    public class UpdateProductCommand(string tenantId, string producId, string name, List<string> category, string description, string imageFile, int currencyValue, double commertialValue) : AbstractCommand
     {
-        public string CompanyId { get; } = companyId;
+        public string TenantId { get; } = tenantId;
         public string ProducId { get; } = producId;
-        public string Name { get; } = Name;
-        public List<string> Category { get; } = Category;
-        public string Description { get; } = Description;
-        public string ImageFile { get; } = ImageFile;
-        public decimal Price { get; } = Price;
+        public string Name { get; } = name;
+        public List<string> Category { get; } = category;
+        public string Description { get; } = description;
+        public string ImageFile { get; } = imageFile;
+        public int CurrencyValue { get; } = currencyValue;
+        public double CommertialValue { get; } = commertialValue;
     }
 
     public class UpdateProductCommandValidator : AbstractValidator<UpdateProductCommand>
@@ -18,12 +19,12 @@ namespace MyPlanner.Catalog.Api.UseCases.Products.UpdateProduct
         public UpdateProductCommandValidator()
         {
             RuleFor(x => x.Id).NotEmpty();
-            RuleFor(x => x.CompanyId).NotEmpty();
+            RuleFor(x => x.TenantId).NotEmpty();
             RuleFor(x => x.Name).NotEmpty();
             RuleFor(x => x.Category).NotEmpty();
             RuleFor(x => x.Description).NotEmpty();
             RuleFor(x => x.ImageFile).NotEmpty();
-            RuleFor(x => x.Price).GreaterThan(0);
+            RuleFor(x => x.CommertialValue).GreaterThan(0);
         }
     }
     public class UpdateProductCommandHandler : AbstractCommandHandler<UpdateProductCommand, ResultSet>
@@ -44,12 +45,13 @@ namespace MyPlanner.Catalog.Api.UseCases.Products.UpdateProduct
                 return ResultSet.Error($"Product {request.Id} was not found");
             }
 
-            product.CompanyId = request.CompanyId;
+            product.TenantId = request.TenantId;
             product.Name = request.Name;
             product.Category = request.Category;
             product.Description = request.Description;
             product.ImageFile = request.ImageFile;
-            product.Price = request.Price;
+            product.CurrencyValue = request.CurrencyValue;
+            product.CommercialValue = request.CommertialValue;
 
             documentSession.Update(product);
 

@@ -1,6 +1,4 @@
 ﻿using MyPlanner.Catalog.Api.Models;
-using MyPlanner.Catalog.Api.Products.GetProductById;
-using MyPlanner.Catalog.Api.UseCases.Products;
 
 namespace MyPlanner.Catalog.Api.UseCases.Products.GetProductById
 {
@@ -10,9 +8,9 @@ namespace MyPlanner.Catalog.Api.UseCases.Products.GetProductById
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapGet("/companies/{companyId}/products/byid/{id}", async (string companyId, string id, [AsParameters] ProductServices service) =>
+            app.MapGet("/products/{tenantid}/{id}", async (string tenantId, string id, [AsParameters] ProductServices service) =>
             {
-                var query = new GetProductByIdQuery(companyId, id);
+                var query = new GetProductByIdQuery(tenantId, id);
 
                 var response = await service.Mediator.Send(query);
 

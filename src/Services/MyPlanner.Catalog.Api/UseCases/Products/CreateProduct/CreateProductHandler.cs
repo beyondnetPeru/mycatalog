@@ -4,12 +4,13 @@ namespace MyPlanner.Catalog.Api.UseCases.Products.CreateProduct
 {
     public class CreateProductCommand : AbstractCommand
     {
-        public string CompanyId { get; set; } = default!;
+        public string TenantId { get; set; } = default!;
         public string Name { get; set; } = default!;
         public List<string> Category { get; set; } = new();
         public string Description { get; set; } = default!;
         public string ImageFile { get; set; } = default!;
-        public decimal Price { get; set; } = default!;
+        public int CurrencyValue { get; set; } = default!;
+        public double Commertialvalue { get; set; } = default!;
     }
     public class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
     {
@@ -19,7 +20,7 @@ namespace MyPlanner.Catalog.Api.UseCases.Products.CreateProduct
             RuleFor(x => x.Category).NotEmpty();
             RuleFor(x => x.Description).NotEmpty();
             RuleFor(x => x.ImageFile).NotEmpty();
-            RuleFor(x => x.Price).GreaterThan(0);
+            RuleFor(x => x.Commertialvalue).GreaterThan(0);
         }
     }
 

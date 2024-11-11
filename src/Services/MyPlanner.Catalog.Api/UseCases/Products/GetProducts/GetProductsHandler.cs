@@ -3,11 +3,11 @@
 
 namespace MyPlanner.Catalog.Api.UseCases.Products.GetProducts;
 
-public class GetProductsQuery(int? PageNumber, int? PageSize, string CompanyId) : AbstractQuery
+public class GetProductsQuery(int? PageNumber, int? PageSize, string TenantId) : AbstractQuery
 {
     public int? PageNumber { get; } = PageNumber;
     public int? PageSize { get; } = PageSize;
-    public string CompanyId { get; } = CompanyId;
+    public string TenantId { get; } = TenantId;
 }
 
 public class GetProductsQueryHandler : AbstractQueryHandler<GetProductsQuery, ResultSet>
@@ -23,7 +23,7 @@ public class GetProductsQueryHandler : AbstractQueryHandler<GetProductsQuery, Re
 
     public override async Task<ResultSet> HandleQuery(GetProductsQuery query, CancellationToken cancellationToken)
     {
-        var response = await documentSession.Query<Product>().Where(p => p.CompanyId == query.CompanyId).ToPagedListAsync(query.PageNumber ?? 1, query.PageSize ?? 10, cancellationToken);
+        var response = await documentSession.Query<Product>().Where(p => p.TenantId == query.TenantId).ToPagedListAsync(query.PageNumber ?? 1, query.PageSize ?? 10, cancellationToken);
 
         return ResultSet.Success(response);
     }

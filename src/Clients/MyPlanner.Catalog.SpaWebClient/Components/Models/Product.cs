@@ -1,4 +1,4 @@
-﻿namespace MyPlanner.Catalog.Api.Models
+﻿namespace MyPlanner.Catalog.SpaWebClient.Components.Models
 {
     public class Product
     {
@@ -10,9 +10,5 @@
         public string ImageFile { get; set; } = default!;
         public int CurrencyValue { get; set; } = default!;
         public double CommercialValue { get; set; } = default!;
-
-        public Product() { 
-            Id = Guid.NewGuid().ToString();
-        }
     }
 }

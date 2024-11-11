@@ -3,9 +3,9 @@
 
 namespace MyPlanner.Catalog.Api.UseCases.Products.GetProductById
 {
-    public class GetProductByIdQuery(string companyId, string productId) : AbstractQuery
+    public class GetProductByIdQuery(string tenantId, string productId) : AbstractQuery
     {
-        public string CompanyId { get; } = companyId;
+        public string TenantId { get; } = tenantId;
         public string ProductId { get; } = productId;
     }
 
@@ -22,7 +22,7 @@ namespace MyPlanner.Catalog.Api.UseCases.Products.GetProductById
 
         public async override Task<ResultSet> HandleQuery(GetProductByIdQuery request, CancellationToken cancellationToken)
         {
-            var response = await _documentSession.Query<Product>().FirstOrDefaultAsync(x => x.CompanyId == request.CompanyId && x.Id == request.ProductId, cancellationToken);
+            var response = await _documentSession.Query<Product>().FirstOrDefaultAsync(x => x.TenantId == request.TenantId && x.Id == request.ProductId, cancellationToken);
 
             if (response == null)
             {

@@ -1,7 +1,4 @@
-﻿using MyPlanner.Catalog.Api.Products.DeleteProduct;
-using MyPlanner.Catalog.Api.UseCases.Products;
-
-namespace MyPlanner.Catalog.Api.UseCases.Products.DeleteProduct
+﻿namespace MyPlanner.Catalog.Api.UseCases.Products.DeleteProduct
 {
     public record DeleteProductResponse(bool IsSuccess);
 
@@ -9,9 +6,9 @@ namespace MyPlanner.Catalog.Api.UseCases.Products.DeleteProduct
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapDelete("/companies/{companyId}/products/{id}", async (string companyId, string id, [AsParameters] ProductServices services) =>
+            app.MapDelete("/products/{tenantId}/{id}", async (string tenantid, string id, [AsParameters] ProductServices services) =>
             {
-                var command = new DeleteProductCommand(companyId, id);
+                var command = new DeleteProductCommand(tenantid, id);
 
                 var response = await services.Mediator.Send(command);
 

@@ -2,9 +2,9 @@
 
 namespace MyPlanner.Catalog.Api.UseCases.Products.DeleteProduct
 {
-    public class DeleteProductCommand(string companyId, string productId) : AbstractCommand
+    public class DeleteProductCommand(string tenantId, string productId) : AbstractCommand
     {
-        public string CompanyId { get; } = companyId;
+        public string TenantId { get; } = tenantId;
         public string ProductId { get; } = productId;
     }
 

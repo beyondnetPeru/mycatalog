@@ -1,17 +1,15 @@
-﻿using MyPlanner.Catalog.Api.UseCases.Products;
-
-namespace MyPlanner.Catalog.Api.UseCases.Products.CreateProduct
+﻿namespace MyPlanner.Catalog.Api.UseCases.Products.CreateProduct
 {
-    public record CreateProductRequest(string companyId, string Name, List<string> Category, string Description, string ImageFile, decimal Price);
+    public record CreateProductRequest(string tenantId, string Name, List<string> Category, string Description, string ImageFile, int currencyValue, double commertialValue);
     public record class CreateProductResponse(string Id);
     public class CreateProductEndpoint : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapPost("/companies/{companyId}/products/", async (string companyId, [AsParameters] ProductServices services, [FromBody] CreateProductRequest createProductRequest) =>
+            app.MapPost("/products", async (string tenantId, [AsParameters] ProductServices services, [FromBody] CreateProductRequest createProductRequest) =>
             {
                 var command = createProductRequest.Adapt<CreateProductCommand>();
-                command.CompanyId = companyId;
+                command.TenantId = tenantId;
 
                 var response = await services.Mediator.Send(command);
 
