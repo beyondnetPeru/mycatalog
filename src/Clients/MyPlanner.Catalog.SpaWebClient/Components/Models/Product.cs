@@ -8,7 +8,16 @@
         public List<string> Category { get; set; } = new();
         public string Description { get; set; } = default!;
         public string ImageFile { get; set; } = default!;
-        public int CurrencyValue { get; set; } = default!;
+        public CurrencyEnum CurrencyValue { get; set; } = default!;
         public double CommercialValue { get; set; } = default!;
+        public int Status { get; set; } = default!;
+    }
+
+    public enum CurrencyEnum
+    {
+        USD,
+        EUR,
+        GBP,
+        JPY
     }
 }

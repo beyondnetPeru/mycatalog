@@ -11,6 +11,7 @@ namespace MyPlanner.Catalog.Api.UseCases.Products.CreateProduct
         public string ImageFile { get; set; } = default!;
         public int CurrencyValue { get; set; } = default!;
         public double Commertialvalue { get; set; } = default!;
+        public int Status { get; set; } = default;
     }
     public class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
     {

@@ -1,0 +1,77 @@
+﻿@page "/products/{id}"
+@using Microsoft.AspNetCore.Components.Forms
+
+<h3>Edit Product</h3>
+
+@if (product != null)
+{
+    <EditForm Model="@product" OnValidSubmit="Submit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            
+            <label for="Id">Id</label>
+            <InputText id="Id" class="form-control" @bind-Value="product.Id" disabled="true" />
+
+            <label for="TenantId">TenantId</label>
+            <InputText id="TenantId" class="form-control" @bind-Value="product.TenantId" disabled="true" />
+                        
+            <label for="Name">Name</label>
+            <InputText id="Name" class="form-control" @bind-Value="product.Name" />
+            
+            <label for="Description">Description</label>
+            <InputText id="Description" class="form-control" @bind-Value="product.Description" />
+            
+            <label for="CommercialValue">CommercialValue</label>
+            <InputSelect @bind-Value="@product.CurrencyValue">
+
+                @foreach (var currency in Enum.GetValues(typeof(CurrencyEnum)))
+                {
+
+                    <option value="@currency">@currency</option>
+                }
+            </InputSelect>
+            <InputNumber id="CommercialValue" class="form-control" @bind-Value="product.CommercialValue" />
+
+            <label for="Category">Category</label>
+
+            <InputSelect id="Category" class="form-control" @bind-Value="product.Category" multiple="true">
+                @foreach (var category in product.Category)
+                {
+                    <option value="@category">@category</option>
+                }
+             </InputSelect>
+
+             <label for="ImageFile">ImageFile</label>
+             <InputFile id="ImageFile" class="form-control" @bind-Value="product.ImageFile" />
+
+            
+            <a href="/products" class="btn btn-link">Cancel</a>
+
+
+            <ValidationMessage For="@(() => product.Name)" />
+        </div>
+   </EditForm> 
+}
+<br />
+
+<a href="/products" class="btn btn-link">Back to list</a>
+
+@code {
+
+    [Parameter]
+    public string Id { get; set; }
+
+    private Product? product;
+
+    protected override void OnParametersSet()
+    {
+        product = ProductsRepository.GetProductById(Id);
+    }
+
+    private void Submit()
+    {
+        // Submit logic here
+    }
+}

@@ -10,6 +10,7 @@
             {
                 var command = createProductRequest.Adapt<CreateProductCommand>();
                 command.TenantId = tenantId;
+                command.Status = 1;
 
                 var response = await services.Mediator.Send(command);
 
