@@ -5,14 +5,13 @@
 
 @if (product != null)
 {
-    <EditForm Model="@product" OnValidSubmit="Submit">
+    <EditForm Model="@product" FormName="formProduct" OnSubmit="Submit">
         <DataAnnotationsValidator />
         <ValidationSummary />
 
+        <InputText id="Id" @bind-Value="product.Id" hidden />
+
         <div class="form-group">
-            
-            <label for="Id">Id</label>
-            <InputText id="Id" class="form-control" @bind-Value="product.Id" disabled="true" />
 
             <label for="TenantId">TenantId</label>
             <InputText id="TenantId" class="form-control" @bind-Value="product.TenantId" disabled="true" />
@@ -25,7 +24,6 @@
             
             <label for="CommercialValue">CommercialValue</label>
             <InputSelect @bind-Value="@product.CurrencyValue">
-
                 @foreach (var currency in Enum.GetValues(typeof(CurrencyEnum)))
                 {
 
@@ -46,9 +44,13 @@
              <label for="ImageFile">ImageFile</label>
              <InputFile id="ImageFile" class="form-control" @bind-Value="product.ImageFile" />
 
-            
-            <a href="/products" class="btn btn-link">Cancel</a>
+            <br />
 
+            <a href="/products" class="btn btn-link">Cancel</a>
+            <button class="btn btn-primary" type="submit">Save</button>
+            <a href="/products" class="btn btn-link">Back to list</a>
+
+            <br />
 
             <ValidationMessage For="@(() => product.Name)" />
         </div>
@@ -56,22 +58,24 @@
 }
 <br />
 
-<a href="/products" class="btn btn-link">Back to list</a>
-
 @code {
 
     [Parameter]
-    public string Id { get; set; }
+    public string? Id { get; set; }
 
-    private Product? product;
+    [SupplyParameterFromForm(FormName = "formProduct")]
+    private Product? product { get; set; }
 
     protected override void OnParametersSet()
     {
-        product = ProductsRepository.GetProductById(Id);
+        product ??= ProductsRepository.GetProductById(Id!);
     }
 
     private void Submit()
     {
-        // Submit logic here
+        if (product!= null)
+        {
+            ProductsRepository.UpdateProduct(product.Id, product);
+        };
     }
 }
