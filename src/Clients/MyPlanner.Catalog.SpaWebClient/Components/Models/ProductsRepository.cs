@@ -56,7 +56,7 @@ public static class ProductsRepository
             Description = "Document Management System.",
             ImageFile = "product-5.png",
             CommercialValue = 950.00,
-            CurrencyValue = CurrencyEnum.USD,
+            CurrencyValue = CurrencyEnum.GBP,
             Category = new List<string> { "Common System" }
         },
         new Product()
@@ -67,7 +67,7 @@ public static class ProductsRepository
             Description = "Foreign Trade Management System",
             ImageFile = "product-6.png",
             CommercialValue = 950.00,
-            CurrencyValue = CurrencyEnum.USD,
+            CurrencyValue = CurrencyEnum.JPY,
             Category = new List<string> { "Supply Management System", "Common System" }
         }
     };

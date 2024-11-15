@@ -1,15 +1,21 @@
 ﻿@page "/products"  
 @using Microsoft.AspNetCore.Components.Forms
 
+@rendermode InteractiveServer
+
+@inject NavigationManager NavigationManager;
+
 <h3>Product List</h3>
 <br />
 
 <div class="container-fluid text-center">
     <div class="row w-50">
         @foreach(var currency in Enum.GetValues(typeof(CurrencyEnum)))
-        {
+        {            
             <div class="col">
-                <button class="btn btn-primary" @onclick="() => FilterByCurrency((CurrencyEnum)currency)">
+                <button type="button"                  
+                    style="background-color:@((Enum.GetName(typeof(CurrencyEnum), currency) == selectedCurrency) ? "red": "gray")"
+                    @onclick="@(() => { FilterByCurrency((CurrencyEnum)currency); })">
                     @currency
                 </button>
             </div>
@@ -17,29 +23,83 @@
     </div>
 </div>
 
+@selectedCurrency
+
 <br />
+
+<ProductList />
+
+<br />
+
+<div class="input-group mb-3">
+    <input type="text" class="form-control" placeholder="Search Products..." @bind-value="productFilter" @bind-value:event="oninput" />
+    <button class="btn btn-primary" type="button" id="button-search" @onclick="HandleSearch">Search</button>
+</div>
 
 <ul>
     @foreach (var product in products)
     {
-        <li>@product.Name is 
+        <li @key="@product.Id">@product.Name is 
             <span style="color: @((product.Status == 1 ? "green": "red"))">
                 @(product.Status == 1 ? "active" : "inactive")  
             </span>
             &nbsp;
             <a href="/products/@product.Id" class="btn btn-link" >Edit</a>
+            &nbsp;
+            <EditForm Model="product" FormName="@($"form-product-{product.Id}")"
+                      OnValidSubmit="() => DeleteProduct(product.Id)">
+                <button type="submit" class="btn btn-link">Delete</button>
+            </EditForm>
+            
        </li>
     }
 </ul>
 
 @code {
-
-  
-
     private List<Models.Product> products = ProductsRepository.GetProducts().ToList();
+
+    private string selectedCurrency = Enum.GetName(CurrencyEnum.USD)!;
+
+    private string _productFilter = "";
+
+    private string productFilter { get => _productFilter; set
+        {
+            _productFilter = value;
+        }
+    }
+
 
     private void FilterByCurrency(CurrencyEnum currency)
     {
+
+        this.selectedCurrency = Enum.GetName(currency)!;
+
         products = ProductsRepository.GetProducts().Where(p => p.CurrencyValue == currency).ToList();
     }
+
+    private void DeleteProduct(string id)
+    {
+        if (string.IsNullOrWhiteSpace(id))
+        {
+            throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
+        }
+
+        if(products == null)
+        {
+            return;
+        }
+
+        products = products.Where(p => p.Id != id).ToList();
+        NavigationManager.NavigateTo("/products");
+    }
+
+  
+    private void HandleSearch()
+    {
+        products = ProductsRepository.GetProducts().Where(p => p.Name.Contains(productFilter)).ToList();
+
+        this.selectedCurrency = string.Empty;
+    }
+
+
 }

@@ -11,7 +11,7 @@
     "profiles": {
       "http": {
         "commandName": "Project",
-        "dotnetRunMessages": true,
+        "dotnetRunMessages": true,"authenticationMode"
         "launchBrowser": true,
         "applicationUrl": "http://localhost:5090",
         "environmentVariables": {

@@ -1,5 +1,7 @@
 ﻿@page "/products/add"
+
 @using Microsoft.AspNetCore.Components.Forms;
+
 @inject NavigationManager NavigationManager;
 
 <h3>Add Product</h3>
@@ -40,7 +42,7 @@
 @code {
 
     [SupplyParameterFromForm(FormName = "FormAddProduct")]
-    private Product product { set; get; } = new Product() { Id = Guid.NewGuid().ToString(); Status = 1};
+    private Product product { set; get; } = new Product() { Id = Guid.NewGuid().ToString(), Status = 1};
 
     private void Submit()
     {

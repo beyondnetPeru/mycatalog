@@ -1,0 +1,52 @@
+﻿@using Microsoft.AspNetCore.Components.Forms;
+
+@rendermode InteractiveServer
+
+@if (product != null)
+{
+    <EditForm Model="product" FormName="productComponentForm" OnSubmit="ChangeProductStatus">
+        <InputText id="TenantId" @bind-Value="product.TenantId" hidden />
+        <InputText id="Name" @bind-Value="product.Name" hidden />
+        <InputText id="Description" @bind-Value="product.Description" hidden />
+        <InputText id="Status" @bind-Value="product.Description" hidden />
+
+
+        <div data-name="@product.Name"
+             data-status="Product is @(product.Status == 1 ? "enable" : "disable")"
+             style="@($"color:{(product.Status == 1 ? "green" : "red")}")">
+
+            @product.Name belongs @product.TenantId and it is @product.Status
+            <button type="submit" class="btn btn-primary">Turn On/Off</button>
+        </div>
+    </EditForm>
+}
+
+@code {
+
+    [SupplyParameterFromForm(FormName = "productComponentForm")]
+    public Product? product { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        product ??= new Product()
+            {
+                Name = "Product 1",
+                Description = "Description 1",
+                TenantId = "TENANT1",
+                Category = ["Software"],
+                CurrencyValue = CurrencyEnum.USD,
+                CommercialValue = 100.00,
+                ImageFile = "product1.jpg",
+                Status = 0
+            };
+    }
+
+    private void ChangeProductStatus()
+    {
+        if (product != null)
+        {
+            product.Status = product.Status == 1 ? 0 : 1;
+
+        }
+    }
+}
