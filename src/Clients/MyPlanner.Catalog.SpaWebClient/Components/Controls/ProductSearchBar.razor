@@ -2,37 +2,25 @@
     <input type="text" 
            class="form-control" 
            placeholder="Search Products..." 
-           @bind-value="ProductFilter" 
+           @bind-value="this.productFilter" 
            @bind-value:event="oninput" />
 
     <button class="btn btn-primary" 
             type="button" 
             id="button-search" 
-            @onclick="HandleFiltering">Search</button>
+            @onclick="HandleSearching">Search</button>
 </div>
 
 
 @code {
 
     [Parameter]
-    public string categorySelected { get; set; } = "";
+    public EventCallback<string> SearchProductCallback { get; set; }
 
     private string productFilter = "";
 
-    [Parameter]
-    public string ProductFilter
-    {
-        get => productFilter; set
-        {
-            productFilter = value;
-        }
-    }
-
-    [Parameter]
-    public EventCallback<string> FilterCallback { get; set; }
-
-    private async void HandleFiltering()
+    private async void HandleSearching()
     {       
-        await FilterCallback.InvokeAsync(productFilter);
+        await SearchProductCallback.InvokeAsync(productFilter);        
     }
 }

@@ -14,12 +14,22 @@
 @code {
 
     [Parameter]
-    public string? categorySelected { get; set; }
+    public string? ProductCategory { get; set; }
+
+    [Parameter]
+    public string? SearchFilter { get; set; }
 
     private List<Product> products = new List<Product>();
 
     protected override void OnParametersSet()
     {
-        products = ProductsRepository.GetProductsByCategory(categorySelected!);
+        if (string.IsNullOrWhiteSpace(this.SearchFilter))
+        {
+            products = ProductsRepository.GetProductsByCategory(ProductCategory!);
+        }
+        else
+        {
+            products = ProductsRepository.SearchProducts(SearchFilter!);
+        }
     }
 }

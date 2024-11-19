@@ -12,19 +12,24 @@
     CategorySelectedCallback="HandleCategorySelected" />
 
 <ProductSearchBar 
-    @rendermode="InteractiveServer"
-    FilterCallback="HandleCategorySelected" /> 
+    SearchProductCallback="HandleSearchProduct" /> 
 
 <ProductList @rendermode="InteractiveServer" 
-    categorySelected="@this.categorySelected" />
+    SearchFilter="@this.searchFilter"
+    ProductCategory="@this.categorySelected" />
 
 @code {
-    
-    [Parameter]
-    public string? categorySelected { get; set; }
+    private string categorySelected = "";
+
+    private string searchFilter = "";
 
     private void HandleCategorySelected(string category)
     {
         this.categorySelected = category;
     } 
+
+    private void HandleSearchProduct(string searchFilter)
+    {
+        this.searchFilter = searchFilter;
+    }
 }
