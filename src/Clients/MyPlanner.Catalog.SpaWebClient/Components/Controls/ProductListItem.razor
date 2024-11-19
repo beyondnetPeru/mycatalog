@@ -1,0 +1,43 @@
+﻿@using Microsoft.AspNetCore.Components.Forms;
+
+@rendermode InteractiveServer
+
+@inject NavigationManager NavigationManager;
+
+@if (product != null)
+{
+    <li @key="product.Id">
+        @product.Name is
+        <span style="color: @((product.Status == 1 ? "green" : "red"))">
+            @(product.Status == 1 ? "active" : "inactive")
+        </span>
+        &nbsp;
+        <a href="/products/@product.Id" class="btn btn-link">Edit</a>
+        &nbsp;
+        <EditForm Model="product" OnValidSubmit="() => DeleteProduct(product.Id)">
+            <button type="submit" class="btn btn-link">Delete</button>
+        </EditForm>
+    </li>
+}
+
+@code {
+
+    [Parameter]
+    public Product? product { get; set; }
+
+    private void DeleteProduct(string id)
+    {
+        if (string.IsNullOrWhiteSpace(id))
+        {
+            throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
+        }
+
+        ProductsRepository.DeleteProduct(id);
+        NavigationManager.NavigateTo("/products", true);
+    }
+
+    protected override void OnParametersSet()
+    {
+        product = product;
+    }
+}

@@ -12,8 +12,8 @@ public static class ProductsRepository
             Description = "User Management System.",
             ImageFile = "product-1.png",
             CommercialValue = 950.00,
-            CurrencyValue = CurrencyEnum.EUR,
-            Category = new List<string> { "Common System" }
+            CurrencyValue = eCurrency.EUR,
+            Category = Enum.GetName(eProductCategory.Software)!
         },
         new Product()
         {
@@ -23,8 +23,8 @@ public static class ProductsRepository
             Description = "Master Data Management System.",
             ImageFile = "product-2.png",
             CommercialValue = 950.00,
-            CurrencyValue = CurrencyEnum.EUR,
-            Category = new List<string> { "Common System" }
+            CurrencyValue = eCurrency.EUR,
+            Category = Enum.GetName(eProductCategory.Software)!
         },
         new Product()
         {
@@ -33,9 +33,9 @@ public static class ProductsRepository
             Name = "TMS",
             Description = "Transportation Management System",
             ImageFile = "product-3.png",
-            CurrencyValue = CurrencyEnum.USD,
             CommercialValue = 950.00,
-            Category = new List<string> { "Supply Chain System" }
+            CurrencyValue = eCurrency.EUR,
+            Category = Enum.GetName(eProductCategory.Software)!
         },
         new Product()
         {
@@ -45,8 +45,8 @@ public static class ProductsRepository
             Description = "Warehouse Management System.",
             ImageFile = "product-4.png",
             CommercialValue = 950.00,
-            CurrencyValue = CurrencyEnum.USD,
-            Category = new List<string> { "Supply Management System" }
+            CurrencyValue = eCurrency.EUR,
+            Category = Enum.GetName(eProductCategory.Software)!
         },
         new Product()
         {
@@ -56,8 +56,8 @@ public static class ProductsRepository
             Description = "Document Management System.",
             ImageFile = "product-5.png",
             CommercialValue = 950.00,
-            CurrencyValue = CurrencyEnum.GBP,
-            Category = new List<string> { "Common System" }
+            CurrencyValue = eCurrency.USD,
+            Category = Enum.GetName(eProductCategory.Software)!
         },
         new Product()
         {
@@ -67,11 +67,12 @@ public static class ProductsRepository
             Description = "Foreign Trade Management System",
             ImageFile = "product-6.png",
             CommercialValue = 950.00,
-            CurrencyValue = CurrencyEnum.JPY,
-            Category = new List<string> { "Supply Management System", "Common System" }
+            CurrencyValue = eCurrency.USD,
+            Category = Enum.GetName(eProductCategory.Books)!
         }
     };
 
+    public static List<Product> GetProductsByCategory(string category) => Products.Where(s => s.Category.ToString() == category).ToList();
     public static void AddProduct(Product Product)
     {
         var maxId = Products.Max(s => s.Id);

@@ -8,15 +8,26 @@ namespace MyPlanner.Catalog.SpaWebClient.Components.Models
         public string TenantId { get; set; } = default!;
         [Required]
         public string Name { get; set; } = default!;
-        public List<string> Category { get; set; } = new();
+        public string Category { get; set; } = default!;
         public string Description { get; set; } = default!;
         public string ImageFile { get; set; } = default!;
-        public CurrencyEnum CurrencyValue { get; set; } = default!;
+        public eCurrency CurrencyValue { get; set; } = default!;
         public double CommercialValue { get; set; } = default!;
         public int Status { get; set; } = default!;
     }
 
-    public enum CurrencyEnum
+    public enum eProductCategory
+    {
+        Food,
+        Electronics,
+        Software,
+        Clothing,
+        Books,
+        Furniture,
+        Other
+    }
+
+    public enum eCurrency
     {
         USD,
         EUR,

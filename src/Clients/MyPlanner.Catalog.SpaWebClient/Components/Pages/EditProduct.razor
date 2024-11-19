@@ -29,7 +29,7 @@
             
             <label for="CommercialValue">CommercialValue</label>
             <InputSelect @bind-Value="@product.CurrencyValue">
-                @foreach (var currency in Enum.GetValues(typeof(CurrencyEnum)))
+                @foreach (var currency in Enum.GetValues(typeof(eCurrency)))
                 {
 
                     <option value="@currency">@currency</option>
@@ -38,14 +38,14 @@
             <InputNumber id="CommercialValue" class="form-control" @bind-Value="product.CommercialValue" />
 
             <label for="Category">Category</label>
-
             <InputSelect id="Category" class="form-control" @bind-Value="product.Category" multiple="true">
-                @foreach (var category in product.Category)
+                @foreach (var category in Enum.GetValues(typeof(eProductCategory)))
                 {
                     <option value="@category">@category</option>
                 }
-             </InputSelect>
+           </InputSelect>
 
+            
              <label for="ImageFile">ImageFile</label>
              <InputFile id="ImageFile" class="form-control" @bind-Value="product.ImageFile" />
 

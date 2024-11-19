@@ -17,18 +17,20 @@
 
     <InputText id="Description" @bind-Value="product.Description" />
     <InputSelect @bind-Value="@product.CurrencyValue">
-        @foreach (var currency in Enum.GetValues(typeof(CurrencyEnum)))
+        @foreach (var currency in Enum.GetValues(typeof(eCurrency)))
         {
             <option value="@currency">@currency</option>
         }
     </InputSelect>
     <InputNumber id="CommercialValue" @bind-Value="product.CommercialValue" />
+    
     <InputSelect id="Category" @bind-Value="product.Category" multiple="true">
-        @foreach (var category in product.Category)
+        @foreach (var category in Enum.GetValues(typeof(eProductCategory)))
         {
             <option value="@category">@category</option>
         }
-    </InputSelect>
+   </InputSelect>
+    
     <InputFile id="ImageFile" @bind-Value="product.ImageFile" />
 
     <br />
