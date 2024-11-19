@@ -8,29 +8,44 @@
 
 <h3>Product List</h3>
 
-<ProductFilterList @rendermode="InteractiveServer" 
-    CategorySelectedCallback="HandleCategorySelected" />
+<ProductFilterList 
+    @ref="productFilterList"
+    categorySelected="@this.categorySelected" 
+    CategorySelectedCallback="HandleCategorySelection" />
 
 <ProductSearchBar 
+    @ref="productSearchBar"
     SearchProductCallback="HandleSearchProduct" /> 
 
-<ProductList @rendermode="InteractiveServer" 
+<ProductList 
     SearchFilter="@this.searchFilter"
-    ProductCategory="@this.categorySelected" />
+    CategorySelected="@this.categorySelected" />
+
+<p>
+    <a href="/products/add" class="btn btn-primary">Add Product</a>
+</p>
 
 @code {
-    private string categorySelected = "";
+    private string categorySelected = string.Empty;
 
-    private string searchFilter = "";
+    private string searchFilter = string.Empty;
 
-    private void HandleCategorySelected(string category)
+    private ProductSearchBar? productSearchBar;
+
+    private ProductFilterList? productFilterList;
+
+    private void HandleCategorySelection(string category)
     {
         this.categorySelected = category;
         this.searchFilter = string.Empty;
+
+        productSearchBar!.ClearFilter();
     } 
 
     private void HandleSearchProduct(string searchFilter)
     {
         this.searchFilter = searchFilter;
+
+        productFilterList!.ClearFilter();
     }
 }

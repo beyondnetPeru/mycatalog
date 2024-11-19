@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Components.Forms;
+@using MyPlanner.Catalog.SpaWebClient.Components.Pages
 
 @rendermode InteractiveServer
 
@@ -6,24 +7,33 @@
 
 @if (product != null)
 {
+    <div class="col">
     <li @key="product.Id">
-        @product.Name is
-        <span style="color: @((product.Status == 1 ? "green" : "red"))">
-            @(product.Status == 1 ? "active" : "inactive")
-        </span>
-        &nbsp;
-        <a href="/products/@product.Id" class="btn btn-link">Edit</a>
-        &nbsp;
-        <EditForm Model="product" OnValidSubmit="() => DeleteProduct(product.Id)">
-            <button type="submit" class="btn btn-link">Delete</button>
-        </EditForm>
+        <div>
+            @product.Name
+        </div>
+        <div>
+            <button type="button" class="btn btn-link" @onclick="EditProduct">Edit</button>
+        </div>
+        <div>            
+            <EditForm Model="product" OnValidSubmit="() => DeleteProduct(product.Id)">
+                <button type="submit" class="btn btn-link">Delete</button>
+            </EditForm>
+        </div>
+
+        @if (editingProducts){
+            <EditProduct id="@product.Id" />
+        }
     </li>
+    </div>
 }
 
 @code {
 
     [Parameter]
     public Product? product { get; set; }
+
+    private bool editingProducts { get; set; } = false;
 
     private void DeleteProduct(string id)
     {
@@ -35,6 +45,11 @@
         ProductsRepository.DeleteProduct(id);
         NavigationManager.NavigateTo("/products", true);
     }
+
+    private void EditProduct()
+    {
+        this.editingProducts = !this.editingProducts;
+    } 
 
     protected override void OnParametersSet()
     {

@@ -17,10 +17,15 @@
     [Parameter]
     public EventCallback<string> SearchProductCallback { get; set; }
 
-    private string productFilter = "";
+    private string productFilter = string.Empty;
+
+    public void ClearFilter()
+    {
+        this.productFilter = string.Empty;
+    }
 
     private async void HandleSearching()
     {       
-        await SearchProductCallback.InvokeAsync(productFilter);        
+        await SearchProductCallback.InvokeAsync(productFilter);             
     }
 }
