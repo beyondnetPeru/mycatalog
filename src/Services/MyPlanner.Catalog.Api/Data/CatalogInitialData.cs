@@ -18,7 +18,7 @@ public class CatalogInitialData : IInitialData
         await session.SaveChangesAsync();
     }
 
-        private static IEnumerable<Product> GetPreconfiguredProducts() => new List<Product>()
+    private static IEnumerable<Product> GetPreconfiguredProducts() => new List<Product>()
             {
                 new Product()
                 {
@@ -27,8 +27,12 @@ public class CatalogInitialData : IInitialData
                     Name = "UMS",
                     Description = "User Management System.",
                     ImageFile = "product-1.png",
-                    CommercialValue = 950.00,
-                    Category = new List<string> { "Common System" }
+                    Price = 950,
+                    Currency = eCurrency.USD.Id,
+                    Category = eProductCategory.Software.Id,
+                    StockQuantity = 100,
+                    Status = 1
+
                 },
                 new Product()
                 {
@@ -37,8 +41,11 @@ public class CatalogInitialData : IInitialData
                     Name = "MMS",
                     Description = "Master Data Management System.",
                     ImageFile = "product-2.png",
-                    CommercialValue = 950.00,
-                    Category = new List<string> { "Common System" }
+                    Price = 950,
+                    Currency = eCurrency.USD.Id,
+                    Category = eProductCategory.Software.Id,
+                    StockQuantity = 100,
+                    Status = 1
                 },
                 new Product()
                 {
@@ -47,8 +54,11 @@ public class CatalogInitialData : IInitialData
                     Name = "TMS",
                     Description = "Transportation Management System",
                     ImageFile = "product-3.png",
-                    CommercialValue = 950.00,
-                    Category = new List<string> { "Supply Chain System" }
+                    Price = 950,
+                    Currency = eCurrency.USD.Id,
+                    Category = eProductCategory.Software.Id,
+                    StockQuantity = 100,
+                    Status = 1
                 },
                 new Product()
                 {
@@ -57,8 +67,11 @@ public class CatalogInitialData : IInitialData
                     Name = "WMS",
                     Description = "Warehouse Management System.",
                     ImageFile = "product-4.png",
-                    CommercialValue = 950.00,
-                    Category = new List<string> { "Supply Management System" }
+                    Price = 950,
+                    Currency = eCurrency.USD.Id,
+                    Category = eProductCategory.Software.Id,
+                    StockQuantity = 100,
+                    Status = 1
                 },
                 new Product()
                 {
@@ -67,8 +80,11 @@ public class CatalogInitialData : IInitialData
                     Name = "FTMS",
                     Description = "Foreign Trade Management System",
                     ImageFile = "product-5.png",
-                    CommercialValue = 950.00,
-                    Category = new List<string> { "Supply Management System" }
-                }                
+                    Price = 950,
+                    Currency = eCurrency.USD.Id,
+                    Category = eProductCategory.Software.Id,
+                    StockQuantity = 100,
+                    Status = 1
+                }
             };
 }
